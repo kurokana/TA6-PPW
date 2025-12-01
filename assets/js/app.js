@@ -1,8 +1,6 @@
-// Weather Dashboard App - WeatherAPI.com Integration
 const API_PROXY = 'api.php';
 let units = 'metric';
 
-// DOM Elements
 const searchInput = document.getElementById('searchInput');
 const suggestions = document.getElementById('suggestions');
 const favoritesEl = document.getElementById('favorites');
@@ -24,12 +22,11 @@ let debounceTimer = null;
 let currentLocation = null;
 let refreshIntervalId = null;
 
-// Helper Functions
 function setStatus(txt, loading = false) {
   statusEl.textContent = txt;
   statusEl.className = loading 
-    ? 'mt-2 text-sm text-slate-500 dark:text-slate-400 loading-dot' 
-    : 'mt-2 text-sm text-slate-500 dark:text-slate-400';
+    ? 'status-text loading-dot' 
+    : 'status-text';
 }
 
 function fetchJson(url) {
@@ -39,7 +36,6 @@ function fetchJson(url) {
   });
 }
 
-// Search Functionality
 searchInput.addEventListener('input', (e) => {
   const q = e.target.value.trim();
   suggestions.innerHTML = '';
@@ -52,13 +48,12 @@ searchInput.addEventListener('input', (e) => {
       .then(data => {
         setStatus('');
         if (!data || data.length === 0) {
-          suggestions.innerHTML = '<li class="p-2 text-sm text-slate-500">Tidak ada hasil</li>';
+          suggestions.innerHTML = '<li>Tidak ada hasil</li>';
           return;
         }
         suggestions.innerHTML = data.map(item => {
           const name = `${item.name}${item.region ? ', ' + item.region : ''}, ${item.country}`;
-          return `<li class="p-2 rounded hover:bg-pastel-200 dark:hover:bg-slate-700 cursor-pointer transition-colors" 
-                      data-lat="${item.lat}" data-lon="${item.lon}" data-name="${name}">${name}</li>`;
+          return `<li data-lat="${item.lat}" data-lon="${item.lon}" data-name="${name}">${name}</li>`;
         }).join('');
       })
       .catch(err => {
@@ -98,18 +93,18 @@ function saveFavorites(arr) {
 function renderFavorites() {
   const arr = loadFavorites();
   if (arr.length === 0) {
-    favoritesEl.innerHTML = '<div class="text-sm text-slate-500 dark:text-slate-400">Belum ada favorit</div>';
+    favoritesEl.innerHTML = '<div class="text-center py-4">Belum ada favorit</div>';
     return;
   }
   favoritesEl.innerHTML = arr.map((c, i) => `
-    <div class="flex items-center justify-between bg-white/60 dark:bg-slate-800/60 p-2 rounded transition-colors">
-      <div class="flex-1 min-w-0">
-        <div class="font-medium truncate">${c.name}</div>
-        <div class="text-xs text-slate-500 dark:text-slate-400">${parseFloat(c.lat).toFixed(2)}, ${parseFloat(c.lon).toFixed(2)}</div>
+    <div class="fav-item">
+      <div>
+        <div>${c.name}</div>
+        <div>${parseFloat(c.lat).toFixed(2)}, ${parseFloat(c.lon).toFixed(2)}</div>
       </div>
-      <div class="flex gap-2 flex-shrink-0">
-        <button data-idx="${i}" class="fav-go px-3 py-1 rounded text-sm glass hover:bg-pastel-300 dark:hover:bg-slate-700 transition-colors">Go</button>
-        <button data-idx="${i}" class="fav-del px-3 py-1 rounded text-sm glass hover:bg-red-200 dark:hover:bg-red-900 transition-colors">Del</button>
+      <div>
+        <button data-idx="${i}" class="fav-btn fav-btn-go">Go</button>
+        <button data-idx="${i}" class="fav-btn fav-btn-del">Del</button>
       </div>
     </div>
   `).join('');
@@ -199,7 +194,7 @@ function renderWeather(data) {
   if (iconUrl && iconUrl.startsWith('//')) iconUrl = 'https:' + iconUrl;
   
   condEl.innerHTML = cur.condition ? 
-    `<div class="flex items-center justify-end gap-2"><img src="${iconUrl}" alt="${cur.condition.text}" class="w-8 h-8" /><span>${cur.condition.text}</span></div>` 
+    `<div class="condition"><img src="${iconUrl}" alt="${cur.condition.text}" class="forecast-icon" /><span>${cur.condition.text}</span></div>` 
     : '';
 
   humidityEl.textContent = `${cur.humidity}%`;
@@ -220,11 +215,11 @@ function renderWeather(data) {
     const min = units === 'metric' ? Math.round(day.day.mintemp_c) : Math.round(day.day.mintemp_f);
     const max = units === 'metric' ? Math.round(day.day.maxtemp_c) : Math.round(day.day.maxtemp_f);
     return `
-      <div class="p-3 rounded text-center bg-white/60 dark:bg-slate-800/60 transition-all hover:scale-105 hover:shadow-lg">
-        <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">${dayName}</div>
-        <img src="${ic}" alt="${desc}" class="mx-auto w-12 h-12" />
-        <div class="text-sm font-semibold mt-1">${max}° / ${min}°</div>
-        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate" title="${desc}">${desc}</div>
+      <div class="forecast-card">
+        <div class="forecast-day">${dayName}</div>
+        <img src="${ic}" alt="${desc}" class="forecast-icon" />
+        <div class="forecast-temps">${max}° / ${min}°</div>
+        <div class="forecast-desc" title="${desc}">${desc}</div>
       </div>
     `;
   }).join('');
@@ -232,20 +227,19 @@ function renderWeather(data) {
 
 // Controls
 unitsToggle.addEventListener('click', () => {
-  if (units === 'metric') {
-    units = 'imperial';
-    unitsToggle.textContent = '°F';
-  } else {
-    units = 'metric';
-    unitsToggle.textContent = '°C';
+  units = units === 'metric' ? 'imperial' : 'metric';
+  unitsToggle.textContent = units === 'metric' ? '°C' : '°F';
+  localStorage.setItem('units', units);
+  if (currentLocation) {
+    updateWeather();
   }
-  if (currentLocation) updateWeather();
 });
 
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
-  localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-  themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light' : '🌙 Dark';
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  themeToggle.textContent = isDark ? '☀️ Light' : '🌙 Dark';
 });
 
 refreshBtn.addEventListener('click', () => {
@@ -307,6 +301,13 @@ function init() {
     themeToggle.textContent = '☀️ Light';
   } else {
     themeToggle.textContent = '🌙 Dark';
+  }
+  
+  // Load saved units
+  const savedUnits = localStorage.getItem('units');
+  if (savedUnits) {
+    units = savedUnits;
+    unitsToggle.textContent = units === 'metric' ? '°C' : '°F';
   }
   
   renderFavorites();
