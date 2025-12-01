@@ -3,7 +3,7 @@
 
 
 
-# Weather Dashboard (PHP + Tailwind + Vanilla JS)
+# Weather Dashboard (PHP + CSS + Vanilla JS)
 
 Dashboard cuaca real-time dengan fitur pencarian kota, favorit, dan forecast 5 hari menggunakan WeatherAPI.com.
 
