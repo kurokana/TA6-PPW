@@ -130,11 +130,6 @@ Data cuaca otomatis refresh setiap 5 menit saat ada lokasi aktif.
 - Pastikan endpoint `api.php` dapat diakses
 - Cek response API di Network tab
 
-## 📝 Catatan
-
-- **Keamanan**: API key disembunyikan di server-side (jangan commit ke repo publik!)
-- **Rate Limit**: Free tier WeatherAPI: 1 juta calls/bulan
-- **Browser Support**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
 ## 📄 Lisensi
 
