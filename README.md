@@ -1,3 +1,8 @@
+<img width="1919" height="979" alt="image" src="https://github.com/user-attachments/assets/1aaeba77-bb48-437e-b566-6b3506e6c710" />
+<img width="1918" height="980" alt="image" src="https://github.com/user-attachments/assets/d63799b2-4971-4fbf-9364-140f02a31c1a" />
+
+
+
 # Weather Dashboard (PHP + Tailwind + Vanilla JS)
 
 Dashboard cuaca real-time dengan fitur pencarian kota, favorit, dan forecast 5 hari menggunakan WeatherAPI.com.
