@@ -1,0 +1,143 @@
+/* Glass morphism effect */
+.glass { 
+  background: rgba(255,255,255,0.75); 
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Loading animation */
+.loading-dot::after { 
+  content: ''; 
+  display:inline-block; 
+  width:8px; 
+  height:8px; 
+  margin-left:6px; 
+  border-radius:999px; 
+  background:currentColor; 
+  animation: blink 1s infinite; 
+  vertical-align:middle;
+}
+
+@keyframes blink { 
+  0%{opacity:0.2;}
+  50%{opacity:1;}
+  100%{opacity:0.2;} 
+}
+
+/* Dark mode styles */
+body.dark-mode { 
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+  color: #e2e8f0; 
+}
+
+body.dark-mode .glass { 
+  background: rgba(15, 23, 42, 0.7); 
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+body.dark-mode input {
+  background: rgba(30, 41, 59, 0.8);
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,0.2);
+}
+
+body.dark-mode input::placeholder {
+  color: #94a3b8;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.5);
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Input focus styles */
+input:focus {
+  outline: none;
+  border-color: #87d8ff;
+  box-shadow: 0 0 0 3px rgba(135, 216, 255, 0.2);
+}
+
+body.dark-mode input:focus {
+  border-color: #5fbfed;
+  box-shadow: 0 0 0 3px rgba(95, 191, 237, 0.2);
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Suggestions dropdown */
+#suggestions {
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 8px;
+}
+
+#suggestions:empty {
+  display: none;
+}
+
+/* Weather card animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cols-5 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .grid-cols-5 > div:nth-child(n+4) {
+    display: none;
+  }
+}

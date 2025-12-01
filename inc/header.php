@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Weather Dashboard</title>
-<!-- Tailwind CDN -->
+<title>Weather Dashboard - Real-time Weather Updates</title>
+<meta name="description" content="Get real-time weather updates and 5-day forecasts for any location worldwide">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -28,4 +28,5 @@
 </script>
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body class="min-h-screen bg-pastel-50 text-slate-700 transition-colors">
+<body class="min-h-screen bg-gradient-to-br from-pastel-50 via-blue-50 to-cyan-50 text-slate-700 transition-colors">
+
